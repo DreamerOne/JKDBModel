@@ -8,6 +8,8 @@
 
 #import "JKDBModel.h"
 
+JDM_ARRAY_TYPE(Depart)
+
 @interface Depart : JKDBModel
 
 /** 部门编号 */

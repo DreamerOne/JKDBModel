@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "JKDBModel.h"
+#import "Depart.h"
 
 @interface User : JKDBModel
 
@@ -33,6 +34,13 @@
 @property (nonatomic, assign)   int                        field1;
 
 @property (nonatomic, assign)   int                        field2;
-
+@property (nonatomic, copy)   NSArray<Depart>             *departsArray;
+@property (nonatomic, copy)   NSArray                     *testArray;
+@property (nonatomic, copy)   NSMutableArray              *testMutableArray;
+@property (nonatomic, copy)   NSDictionary                *testDict;
+@property (nonatomic, copy)   NSMutableDictionary         *testMutableDict;
+@property (nonatomic, copy)   NSData                      *testData;
+@property (nonatomic, copy)   NSDate                      *testDate;
+@property (nonatomic, copy)   NSNumber                    *testNumber;
 
 @end

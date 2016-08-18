@@ -23,9 +23,24 @@
         user.sex = @"男";
         user.age = 10+i;
         user.createTime = 1368082020;
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [user save];
-        });
+        Depart *depart = [[Depart alloc]init];
+        depart.departNum = @"1";
+        depart.departName = @"11";
+        Depart *depart2 = [[Depart alloc]init];
+        depart2.departNum = @"2";
+        depart2.departName = @"22";
+        user.departsArray = (NSArray<Depart>*)@[depart,depart2];
+        user.testArray = @[@"333",@"33333"];
+        user.testMutableArray = [[NSMutableArray alloc]initWithArray:@[@"444",@"44444"]];
+        user.testDict = @{@"dict":@"value"};
+        user.testMutableDict = [[NSMutableDictionary alloc]initWithDictionary:@{@"dict":@"value"}];
+        user.testData = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
+        user.testDate = [NSDate date];
+        user.testNumber = [NSNumber numberWithDouble:70000.89];
+//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//            [user save];
+//        });
+        [user saveAsync:nil];
     }
 }
 
@@ -39,18 +54,48 @@
             user.name = @"赵五";
             user.sex = @"女";
             user.age = i+5;
-            [user save];
+            Depart *depart = [[Depart alloc]init];
+            depart.departNum = @"1";
+            depart.departName = @"11";
+            Depart *depart2 = [[Depart alloc]init];
+            depart2.departNum = @"2";
+            depart2.departName = @"22";
+            user.departsArray = (NSArray<Depart>*)@[depart,depart2];
+            user.testArray = @[@"333",@"33333"];
+            user.testMutableArray = [[NSMutableArray alloc]initWithArray:@[@"444",@"44444"]];
+            user.testDict = @{@"dict":@"value"};
+            user.testMutableDict = [[NSMutableDictionary alloc]initWithDictionary:@{@"dict":@"value"}];
+            user.testData = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
+            user.testDate = [NSDate date];
+            user.testNumber = [NSNumber numberWithDouble:70000.89];
+//            [user save];
+            [user saveAsync:nil];
         }
     });
 }
 
 - (IBAction)insertData3:(id)sender {
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 5; ++i) {
         User *user = [[User alloc] init];
         user.name = @"张三";
         user.sex = @"男";
         user.age = i+5;
-        [user save];
+        Depart *depart = [[Depart alloc]init];
+        depart.departNum = @"1";
+        depart.departName = @"11";
+        Depart *depart2 = [[Depart alloc]init];
+        depart2.departNum = @"2";
+        depart2.departName = @"22";
+        user.departsArray = (NSArray<Depart>*)@[depart,depart2];
+        user.testArray = @[@"333",@"33333"];
+        user.testMutableArray = [[NSMutableArray alloc]initWithArray:@[@"444",@"44444"]];
+        user.testDict = @{@"dict":@"value"};
+        user.testMutableDict = [[NSMutableDictionary alloc]initWithDictionary:@{@"dict":@"value"}];
+        user.testData = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
+        user.testDate = [NSDate date];
+        user.testNumber = [NSNumber numberWithDouble:70000.89];
+//        [user save];
+        [user saveAsync:nil];
     }
 }
 
@@ -58,14 +103,29 @@
 - (IBAction)insertData4:(id)sender {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSMutableArray *array = [NSMutableArray array];
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 10; i++) {
             User *user = [[User alloc] init];
             user.name = [NSString stringWithFormat:@"李四%d",i];
             user.age = 10+i;
             user.sex = @"女";
+            Depart *depart = [[Depart alloc]init];
+            depart.departNum = @"1";
+            depart.departName = @"11";
+            Depart *depart2 = [[Depart alloc]init];
+            depart2.departNum = @"2";
+            depart2.departName = @"22";
+            user.departsArray = (NSArray<Depart>*)@[depart,depart2];
+            user.testArray = @[@"333",@"33333"];
+            user.testMutableArray = [[NSMutableArray alloc]initWithArray:@[@"444",@"44444"]];
+            user.testDict = @{@"dict":@"value"};
+            user.testMutableDict = [[NSMutableDictionary alloc]initWithDictionary:@{@"dict":@"value"}];
+            user.testData = [@"hello" dataUsingEncoding:NSUTF8StringEncoding];
+            user.testDate = [NSDate date];
+            user.testNumber = [NSNumber numberWithDouble:70000.89];
             [array addObject:user];
         }
-        [User saveObjects:array];
+//        [User saveObjects:array];
+        [User saveObjectsAsync:array callback:nil];
     });
 }
 
@@ -94,7 +154,7 @@
         NSMutableArray *array = [NSMutableArray array];
         for (int i = 0; i < 500; i++) {
             User *user = [[User alloc] init];
-            user.pk = 501+i;
+            user.pk = 10+i;
             [array addObject:user];
         }
         [User deleteObjects:array];
@@ -135,23 +195,31 @@
 #pragma mark - 查询
 /** 查询单条记录 */
 - (IBAction)queryData1:(id)sender {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSLog(@"第一条:%@",[User findFirstByCriteria:@" WHERE age = 20 "]);
-    });
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//        NSLog(@"第一条:%@",[User findFirstByCriteria:@" WHERE age = 20 "]);
+//    });
+    
+    [User findFirstByCriteriaAsync:@" WHERE age = 20 " callback:nil];
 }
 
 /**  条件查询多条记录 */
 - (IBAction)queryData2:(id)sender {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSLog(@"小于20岁:%@",[User findByCriteria:@" WHERE age < 20 "]);
-    });
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//        NSLog(@"小于20岁:%@",[User findByCriteria:@" WHERE age < 20 "]);
+//    });
+    
+    [User findByCriteriaAsync:@" WHERE age < 20 " callback:nil];
 }
 
 /** 查询全部数据 */
 - (IBAction)queryData3:(id)sender {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSLog(@"全部:%@",[User findAll]);
-    });
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//        NSLog(@"全部:%@",[User findAll]);
+//    });
+    
+    [User findAllAsync:^(NSArray *objects) {
+        NSLog(@"全部:%@",objects);
+    }];
 }
 
 /** 分页查询数据 */

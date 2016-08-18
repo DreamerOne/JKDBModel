@@ -41,10 +41,17 @@
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSLog(@"第一条");
 //                User *user = [User findFirstByCriteria:@" WHERE age = 20 "];
-                User *user = [User findFirstWithFormat:@" WHERE %@ = %d ",@"age",10];
-                if (!user)  return;
-                [self.data addObject:user];
+//                User *user = [User findFirstWithFormat:@" WHERE %@ = %d ",@"age",10];
+//                if (!user)  return;
+//                [self.data addObject:user];
+//                [self.tableView reloadData];
+
+            [User findFirstWithFormatAsync:^(JKDBModel *model) {
+                
+                if (!model)  return;
+                [self.data addObject:model];
                 [self.tableView reloadData];
+                } format:@" WHERE %@ = %d ",@"age",10];
             });
             break;
         }
@@ -53,8 +60,16 @@
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSLog(@"小于20岁");
 //                [self.data addObjectsFromArray:[User findByCriteria:@" WHERE age < 20 "]];
-                [self.data addObjectsFromArray:[User findWithFormat:@" WHERE %@ < %d",@"age",20]];
-                [self.tableView reloadData];
+//                [self.data addObjectsFromArray:[User findWithFormat:@" WHERE %@ < %d",@"age",20]];
+//                [self.tableView reloadData];
+                
+                [User findWithFormatAsync:^(NSArray *models) {
+                    if (models.count > 0) {
+                        
+                        [self.data addObjectsFromArray:models];
+                        [self.tableView reloadData];
+                    }
+                } format:@" WHERE %@ < %d",@"age",20];
             });
             break;
         }
@@ -62,8 +77,16 @@
         {
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 NSLog(@"全部");
-                [self.data addObjectsFromArray:[User findAll]];
-                [self.tableView reloadData];
+//                [self.data addObjectsFromArray:[User findAll]];
+//                [self.tableView reloadData];
+                
+                [User findAllAsync:^(NSArray *objects) {
+                    if (objects.count > 0) {
+                        
+                        [self.data addObjectsFromArray:objects];
+                        [self.tableView reloadData];
+                    }
+                }];
             });
             break;
         }
@@ -83,9 +106,16 @@
 {
     static int pk = 5;
     NSArray *array = [User findByCriteria:[NSString stringWithFormat:@" WHERE pk > %d limit 10",pk]];
-    pk = ((User *)[array lastObject]).pk;
-    [self.data addObjectsFromArray:array];
-    [self.tableView reloadData];
+//    pk = ((User *)[array lastObject]).pk;
+//    [self.data addObjectsFromArray:array];
+//    [self.tableView reloadData];
+    
+    [User findByCriteriaAsync:[NSString stringWithFormat:@" WHERE pk > %d limit 10",pk] callback:^(NSArray *models) {
+        
+        pk = ((User *)[models lastObject]).pk;
+        [self.data addObjectsFromArray:models];
+        [self.tableView reloadData];
+    }];
 }
 
 #pragma mark - Table view data source
